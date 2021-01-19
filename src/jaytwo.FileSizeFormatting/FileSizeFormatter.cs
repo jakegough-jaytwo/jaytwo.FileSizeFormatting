@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace jaytwo.FileSizeFormatting
                 { Math.Pow(1000, 4), "TB" },
             });
 
-        public string GetCaption(long length)
+        public string GetCaption(long length, CultureInfo cultureInfo)
         {
             foreach (var entry in _scale.OrderByDescending(x => x.Key))
             {
@@ -48,7 +49,7 @@ namespace jaytwo.FileSizeFormatting
                     var decimalPlaces = GetDecimalPlaces(ratio);
 
                     // convert to decimal right before the rounding to avoid floating point quirks... (ex: $"{1115d / 1000d:n2}" returns "1.11" instead of "1.12")
-                    return string.Format("{0:n" + decimalPlaces + "} {1}", (decimal)ratio, entry.Value);
+                    return string.Format(cultureInfo, "{0:n" + decimalPlaces + "} {1}", (decimal)ratio, entry.Value);
                 }
             }
 

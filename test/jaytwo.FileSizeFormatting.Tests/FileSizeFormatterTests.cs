@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -68,6 +69,25 @@ namespace jaytwo.FileSizeFormatting.Tests
 
             // act
             var actual = formatter.GetCaption(sizeBytes);
+
+            // assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(0, "en-US", "0 B")]
+        [InlineData(0, "pt-BR", "0 B")]
+        [InlineData(1500, "en-US", "1.50 KB")]
+        [InlineData(1500, "pt-BR", "1,50 KB")]
+        [InlineData(1000L * 1000L * 1000L * 1000L * 1000L, "en-US", "1,000 TB")]
+        [InlineData(1000L * 1000L * 1000L * 1000L * 1000L, "pt-BR", "1.000 TB")]
+        public void WithLocale(long sizeBytes, string locale, string expected)
+        {
+            // arrange
+            var formatter = FileSizeFormatter.CreateWithDecimalScale();
+
+            // act
+            var actual = formatter.GetCaption(sizeBytes, new CultureInfo(locale));
 
             // assert
             Assert.Equal(expected, actual);
