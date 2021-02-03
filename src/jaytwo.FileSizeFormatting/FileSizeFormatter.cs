@@ -44,7 +44,7 @@ namespace jaytwo.FileSizeFormatting
             {
                 var ratio = length / entry.Key;
 
-                if (ratio >= 0.7) // 699 B, then 0.70 KiB
+                if (ratio >= 0.7) // 699 B, then 0.70 KB
                 {
                     var decimalPlaces = GetDecimalPlaces(ratio);
 
